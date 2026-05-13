@@ -14,7 +14,7 @@ ALLOWED_PREFIXES = [
     "alibaba/", "zhipuai/", "minimax/", "meta-llama/"
 ]
 
-@app.get("/v1/models")
+@app.api_route("/v1/models", methods=["GET", "HEAD"])
 async def list_models():
     async with httpx.AsyncClient() as client:
         try:
@@ -32,7 +32,7 @@ async def list_models():
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/v1/chat/completions")
+@app.api_route("/v1/chat/completions", methods=["POST", "HEAD"])
 async def chat_proxy(request: Request):
     body = await request.json()
     if "model" not in body:
